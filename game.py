@@ -1,4 +1,4 @@
-#(c) 2016 Gabriela Hakeman, Foursoft. This program is under the Creative Commons Zero license. THIS PROGRAM COMES WITH ABSOLUTELY NO WARRANTY.  Enjoy, Fourange.
+#(c) 2016 Charlie Welsh, Foursoft. This program is under the Creative Commons Zero license. THIS PROGRAM COMES WITH ABSOLUTELY NO WARRANTY.  Enjoy, Fourange.
 import os
 
 
