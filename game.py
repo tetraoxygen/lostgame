@@ -1,4 +1,7 @@
-#(c) 2016 Charlie Welsh, Foursoft. This program is under the Creative Commons Zero license. THIS PROGRAM COMES WITH ABSOLUTELY NO WARRANTY.  Enjoy, Fourange.
+#(c) 2016 Gabriela Hakeman, Foursoft. This program is under the Creative Commons Zero license. THIS PROGRAM COMES WITH ABSOLUTELY NO WARRANTY.  Enjoy, Fourange.
+import os
+
+
 class Room(object):
     def __init__(self, r, exits=[],
                  desc="a perfect cube of a room. It is 2 meters cubed. There seems to be no way out.",
@@ -16,8 +19,8 @@ class Room(object):
 
 class Runtime(object):
     def __init__(self):
-        self.roomlist = []
-        self.room = 0
+        self.roomlist = {}
+        self.room = '0'
         self.readfile('level.txt')
         self.health=100
         self.inventory=[]
@@ -32,7 +35,7 @@ class Runtime(object):
             line = line.rstrip('\n')
             if ':' in line:
                 key, value = line.split(':')
-                print("key",key,"value",value)
+                #print("key",key,"value",value)
                 if key == 'desc':
                     desc = value
                 if key == 'items':
@@ -54,7 +57,7 @@ class Runtime(object):
                         values = [value]
                     for val in values:
                         e_dir = val[0]
-                        e_rm = int(val[2])
+                        e_rm = val[2:]
                         print ("room",r,"dir", e_dir, "exit is", e_rm)
                         exits[e_dir] = e_rm
                 if key == 'room':
@@ -62,20 +65,21 @@ class Runtime(object):
                     if r is not None:
                         print ("adding previous room", r, "at", len(self.roomlist))
                         rm = Room(r, exits,desc,items,locks)
-                        self.roomlist.append(rm)
+                        self.roomlist[r]=rm
                         r = desc = None
                         items = []
                         locks=[]
                         exits={}
-                    r = int(value)
+                    r = value
         if r is not None:
             print ("adding last room", r, "at", len(self.roomlist))
             rm = Room(r, exits,desc,items,locks)
-            self.roomlist.append(rm)
+            self.roomlist[r]=rm
         f.close()
     
    
     def run(self):
+        os.system('cls')
         while True:
             print("room:", self.room)
             print("You are in", self.roomlist[self.room].desc)
@@ -85,6 +89,10 @@ class Runtime(object):
                 print("the locked doors are:",  self.roomlist[self.room].locks)
             print("You can go", self.roomlist[self.room].exits)
             i = input(">").lower()
+            if (i == 'unlock' or i == 'use key' or i == 'u') and 'key' in self.inventory:
+                print('The door unlocks with a resounding clunk.')
+                self.inventory.remove('key')
+                self.roomlist[self.room].locks=[]
             r = None
             if i == "t" or i == 'take':
                 self.inventory.extend(self.roomlist[self.room].items)
@@ -93,7 +101,7 @@ class Runtime(object):
                 dirname = i[0]
                 if dirname in self.roomlist[self.room].exits:
                     if dirname in self.roomlist[self.room].locks:
-                        print('That door is locked. Keys will be implemented in a future update. Good luck.')
+                        print('That door is locked. Type U to unlock the door if you have a key.')
                     else:
                         r = self.roomlist[self.room].exits[dirname]
                 else:
@@ -102,7 +110,7 @@ class Runtime(object):
                 print("That is invalid. Retype your command.")
                 continue
             if r is not None:
-                self.room=int(r)
+                self.room=(r)
 
 
 rt=Runtime()
