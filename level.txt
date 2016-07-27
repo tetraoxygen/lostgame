@@ -1,0 +1,30 @@
+room:0
+desc:the entrance
+exits:e=1,w=2
+locks:w
+items:axe,flashlight,smartphone
+
+room:1
+desc:a hallway
+exits:w=0,e=3
+items:key
+
+room:2
+desc:a round room
+exits:e=0
+npc:wall glow,parrot
+
+room:3
+desc:dining
+exits:w=1,n=4
+items:food
+
+room:4
+desc:storage
+exits:s=3,w=5
+items:batteries
+
+room:5
+desc:a cake room with an incinirator in the back
+exits:e=4
+items:cake
