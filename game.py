@@ -1,4 +1,4 @@
-#(c) 2016 Charlie Welsh, Foursoft. This program is under the Creative Commons Zero license. THIS PROGRAM COMES WITH ABSOLUTELY NO WARRANTY.  Enjoy, Fourange.
+#(c) 2016 Charlie Welsh, Foursoft. This program is under the GPLv3 license. Ver. σ1 THIS PROGRAM COMES WITH ABSOLUTELY NO WARRANTY.  Enjoy, Fourange.
 import os
 
 
@@ -89,10 +89,14 @@ class Runtime(object):
                 print("the locked doors are:",  self.roomlist[self.room].locks)
             print("You can go", self.roomlist[self.room].exits)
             i = input(">").lower()
+            cancel = 0
             if (i == 'unlock' or i == 'use key' or i == 'u') and 'key' in self.inventory:
                 print('The door unlocks with a resounding clunk.')
                 self.inventory.remove('key')
                 self.roomlist[self.room].locks=[]
+            elif(i == 'unlock' or i == 'use key' or i == 'u'):
+                    print('There is no key in your inventory or there are no exits with locks in this room.')
+                    cancel = 1 
             r = None
             if i == "t" or i == 'take':
                 self.inventory.extend(self.roomlist[self.room].items)
@@ -106,9 +110,11 @@ class Runtime(object):
                         r = self.roomlist[self.room].exits[dirname]
                 else:
                     print('Invalid exit. Retry your command.')
-            else:
+            
+            elif cancel == 0:
                 print("That is invalid. Retype your command.")
                 continue
+                
             if r is not None:
                 self.room=(r)
 
